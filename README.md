@@ -1,14 +1,19 @@
-# Crystallinity
-Crystallization propensity prediction by using dynamics-related features and AGT-GA 
-All source codes for dynamic extraction from NMA and protein sequences are provided.
+# Crystallization propensity prediction 
+Description:
+All source codes for dynamic feature extraction from NMA (Normal Mode Analysis) and protein sequences are provided.
 
-Also, AGT-GA for duynamic processing and models for processing of sequence and strucutral feature are provided.
+AGT-GA for dynamic processing and models for processing of sequence and structural features are also included.
 
-AGTGA.py provides full model for dynamic feature extractions from dynamic graphs.
+- **AGTGA.py**: Provides a complete model for dynamic feature extraction from dynamic graphs.
+- **dynamic_preparation.py**: Contains the source code for dynamic graph extraction from the protein.
 
-dynamic_preparation.py provides source code for dynamic graph extraction from the protein.
+**Main Code - properties.ipynb**: Used for assembling sequential and structural features.
 
-Main code properties.ipynb is used for assembling sequential and steructural featurtes.
+**sequential_struc.ipynb**: Used for building a model for the processing of protein sequence and structural features.
 
-sequential_struc.ipynb is used for builidng a model for processing of protein sequence and structural features. 
-training+testing.ipynb is used for traning and testing the model. this notebook includes all evaluations and trnaing procedure code.
+**training_testing.ipynb**: Used for training and testing the model. This notebook includes all evaluations and training procedure codes.
+
+Datasets:
+Training, SP (Sequence Processing), TR (Testing and Results), and balanced_test are provided within the FASTA files.
+
+
