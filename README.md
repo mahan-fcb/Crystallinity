@@ -14,6 +14,6 @@ AGT-GA for dynamic processing and models for processing of sequence and structur
 **training_testing.ipynb**: Used for training and testing the model. This notebook includes all evaluations and training procedure codes.
 
 Datasets:
-Training, SP (Sequence Processing), TR (Testing and Results), and balanced_test are provided within the FASTA files.
+Training, SP, TR, and balanced_test are provided within the FASTA files.
 
 
