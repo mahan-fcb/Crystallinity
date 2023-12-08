@@ -22,6 +22,8 @@ generated structures are fed to Dynamut to extract dynamic related feature https
 
 Also, you can feed 3D structures dynamic-preparation.py to extract full dynamic graphs. 
 
+When you prepared the input features. you need to save them in the processed folder, then open the test+training.ipynb and run each cell of this notebook to train and test the model
+
  
 
 
