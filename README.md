@@ -16,4 +16,14 @@ AGT-GA for dynamic processing and models for processing of sequence and structur
 Datasets:
 Training, SP, TR, and balanced_test are provided within the FASTA files.
 
+To generate 3D structure feed provided sequence to RosetAAFold here. https://github.com/RosettaCommons/RoseTTAFold
+
+generated structures are fed to Dynamut to extract dynamic related feature https://biosig.lab.uq.edu.au/dynamut2/
+
+Also, you can feed 3D structures dynamic-preparation.py to extract full dynamic graphs. 
+
+
+
+
+
 
