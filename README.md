@@ -1,28 +1,24 @@
 # Crystallization propensity prediction 
 Description:
 All source codes for dynamic feature extraction from NMA (Normal Mode Analysis) and protein sequences are provided.
+# Data Preparation
 
-AGT-GA for dynamic processing and models for processing of sequence and structural features are also included.
+for dynamic extraction and and save data including all raw sequence, structural features, and dynamic feature (NMA), you can use run data_preparation.py
 
-- **AGTGA.py**: Provides a complete model for dynamic feature extraction from dynamic graphs.
-- **dynamic_preparation.py**: Contains the source code for dynamic graph extraction from the protein.
+for running this code, you need to have a csv file including ID of protein and its corresponding crystallization class. Please note that you need to have .pdb file of each protein ID in the directory in which you save your CSV file. 
+Also, you need to save all raw sequences in a either pickle file or csv file with header of "Seq". 
+Furthermore, you need to save all structural features in a pickle file
 
-**Main Code - properties.ipynb**: Used for assembling sequential and structural features.
+For PDB prediction, you use either alphafold2 or  RosetAAFold. (prefferly RosetAAFold) https://github.com/RosettaCommons/RoseTTAFold
+For structural feature, you have to use SCRATCH software for (SS, RSA) here: https://scratch.proteomics.ics.uci.edu/
+Main Code - properties.ipynb for global features
+ESpritz for disorder prediction: http://old.protein.bio.unipd.it/espritz/. 
+When you obtain all of these additional features, To gather all of these structural information to make a pickle file, you need to use feature_prepration.ipynb 
 
-**sequential_struc.ipynb**: Used for building a model for the processing of protein sequence and structural features.
+Please save the final data incuding all dynamics, sequence, and structural features in a processed folder. 
 
-**training_testing.ipynb**: Used for training and testing the model. This notebook includes all evaluations and training procedure codes.
+To run the DSDCrystal model, you need to run main.py file 
 
-Datasets:
-Training, SP, TR, and balanced_test are provided within the FASTA files.
-
-To generate 3D structure feed provided sequence to RosetAAFold here. https://github.com/RosettaCommons/RoseTTAFold
-
-generated structures are fed to Dynamut to extract dynamic related feature https://biosig.lab.uq.edu.au/dynamut2/
-
-Also, you can feed 3D structures dynamic-preparation.py to extract full dynamic graphs. 
-
-When you prepared the input features. you need to save them in the processed folder, then open the test+training.ipynb and run each cell of this notebook to train and test the model
 
  
 
