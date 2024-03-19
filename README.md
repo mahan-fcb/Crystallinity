@@ -13,7 +13,7 @@ For PDB prediction, you use either alphafold2 or  RosetAAFold. (prefferly RosetA
 For structural feature, you have to use SCRATCH software for (SS, RSA) here: https://scratch.proteomics.ics.uci.edu/
 Main Code - properties.ipynb for global features
 ESpritz for disorder prediction: http://old.protein.bio.unipd.it/espritz/. 
-When you obtain all of these additional features, To gather all of these structural information to make a pickle file, you need to use feature_prepration.ipynb 
+When you obtain all of these additional features, To gather all of these structural information to make a pickle file, you need to use Main code for dataset.ipynb 
 
 Please save the final data incuding all dynamics, sequence, and structural features in a processed folder. 
 
