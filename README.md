@@ -20,7 +20,10 @@ Please save the final data incuding all dynamics, sequence, and structural featu
 To run the DSDCrystal model, you need to run main.py file
 main.py --data_dir "C:/Users/mom19004/Downloads/sams/" --data "M.pt"
 
+Part of this source codes are obtained from the following papers. if you use this source please cite following papers:
 
+1- Chiang, Yuan, Wei-Han Hui, and Shu-Wei Chang. "Encoding protein dynamic information in graph representation for functional residue identification." Cell Reports Physical Science 3.7 (2022).
+2- Omee, Sadman Sadeed, Steph-Yves Louis, Nihang Fu, Lai Wei, Sourin Dey, Rongzhi Dong, Qinyang Li, and Jianjun Hu. "Scalable deeper graph neural networks for high-performance materials property prediction." Patterns 3, no. 5 (2022).
  
 
 
