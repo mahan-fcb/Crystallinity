@@ -1,0 +1,12 @@
+This folder includs all datasets for different classes obtained from various sources cited in our manuscript. 
+MF: sequencing failed; cloning failed; expression failed
+
+PF: purification failed
+
+CF: crystallization failed; poor diffraction
+
+CR: structure successful; PDB duplication found
+
+Please note that in the MF files we put both sequence cloning and production material failed because our model shows 100% accuracy for cloning failed. 
+
+Also, there are some TR, SP, and balanced data for binary classification in the repository for those who are going to do binary classification.
