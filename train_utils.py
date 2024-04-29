@@ -158,7 +158,64 @@ def trainer(
         dist.barrier()
 
     return model_best
+def train_one_epoch(model, data_loader, optimizer, criterion, device):
+    model.train()
+    total_loss = 0
+    correct = 0
+    total = 0
 
+    for sequences, graph_data, features, labels, batch_index in data_loader:
+        sequences, graph_data, features, labels, batch_index = (
+            sequences.to(device),
+            graph_data.to(device),
+            features.to(device),
+            labels.to(device),
+            batch_index.to(device)
+        )
+
+        optimizer.zero_grad()
+        outputs = model(sequences, graph_data, features, batch_index)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+
+        total_loss += loss.item() * labels.size(0)
+        predicted = (torch.sigmoid(outputs) > 0.5).float()  # Threshold the outputs at 0.5
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+
+    avg_loss = total_loss / total
+    accuracy = 100 * correct / total
+    return avg_loss, accuracy
+
+def evaluate_model(model, data_loader, criterion, device):
+    model.eval()
+    total_loss = 0
+    correct = 0
+    total = 0
+
+    with torch.no_grad():
+        for sequences, graph_data, features, labels, batch_index in data_loader:
+            sequences, graph_data, features, labels, batch_index = (
+                sequences.to(device),
+                graph_data.to(device),
+                features.to(device),
+                labels.to(device),
+                batch_index.to(device)
+            )
+
+            outputs = model(sequences, graph_data, features, batch_index)
+            loss = criterion(outputs, labels)
+
+            total_loss += loss.item() * labels.size(0)
+            predicted = (torch.sigmoid(outputs) > 0.5).float()  # Threshold the outputs at 0.5
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+    avg_loss = total_loss / total
+    accuracy = 100 * correct / total
+    return avg_loss, accuracy
+    
 
 def model_setup(
     rank,
@@ -309,3 +366,34 @@ def write_results(output, filename):
                 )
             elif i > 0:
                 csvwriter.writerow(output[i - 1, :])
+from torch.nn.functional import pad
+from torch_geometric.data import Batch
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.utils.data import DataLoader
+from torch_geometric.data import Batch  # Import the Batch class for graph data handling
+from torch_geometric.nn import GCNConv,GATConv
+def collate_fn(batch):
+    sequences, graph_data, features, labels = zip(*batch)
+
+    # Pad sequences to have the same length
+    padded_sequences = torch.stack(sequences)
+
+    # Handle graph data - aggregating all to a single giant graph
+    batched_graph = Batch.from_data_list(graph_data)
+
+    # Stack all feature vectors and labels
+    features_stacked = torch.stack(features)
+    labels_stacked = torch.tensor(labels, dtype=torch.float32).unsqueeze(1)
+
+    return padded_sequences, batched_graph, features_stacked, labels_stacked, batched_graph.batch
+
+def train_model(model, train_loader, val_loader, optimizer, criterion, num_epochs, device):
+    for epoch in range(num_epochs):
+        train_loss, train_accuracy = train_one_epoch(model, train_loader, optimizer, criterion, device)
+        val_loss, val_accuracy = evaluate_model(model, val_loader, criterion, device)
+
+        print(f'Epoch {epoch+1}/{num_epochs}')
+        print(f'Training Loss: {train_loss:.4f}, Training Accuracy: {train_accuracy:.2f}%')
+        print(f'Validation Loss: {val_loss:.4f}, Validation Accuracy: {val_accuracy:.2f}%')
