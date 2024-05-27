@@ -1,7 +1,10 @@
+
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch_geometric.nn import GATConv, GlobalAttention
+from torch_geometric.nn import GATConv, GlobalAttention, SAGEConv
+from torch_geometric.data import Data
 
 class SEDenseLayer(nn.Module):
     def __init__(self, in_channels, growth_rate):
@@ -34,10 +37,9 @@ class SEBlock(nn.Module):
         return x * y.expand_as(x)
 
 class ProteinClassifier(nn.Module):
-    def __init__(self, num_features=21, num_classes=1, growth_rate=32, num_blocks=4):
+    def __init__(self, num_features=21, num_classes=1, growth_rate=32, num_blocks=4, attention_heads=4, graph_layers=2):
         super(ProteinClassifier, self).__init__()
-        self.num_features = num_features
-        
+        self.num_features = num_features    
         # Initial conv layer
         self.conv1 = nn.Conv1d(num_features, 32, kernel_size=3, padding=1)
         self.bn1 = nn.BatchNorm1d(32)
@@ -49,18 +51,22 @@ class ProteinClassifier(nn.Module):
             self.dense_blocks.add_module("dense_block_{}".format(i), SEDenseLayer(num_channels, growth_rate))
             num_channels += growth_rate
         
-        # Graph processing layers using Graph Attention Networks
-        self.gat1 = GATConv(in_channels=21, out_channels=64, heads=4)
-        self.gat2 = GATConv(in_channels=64*4, out_channels=128, heads=1)  # Adjust for concatenated heads
+        # Graph processing layers using Graph Attention Networks (or other Graph Neural Network)
+        self.graph_layers = graph_layers
+        self.gat_layers = nn.ModuleList()
+        self.gat_in_channels = num_features  # Adjust if you want to use different input features for graph
+        for _ in range(graph_layers):
+            self.gat_layers.append(GATConv(self.gat_in_channels, 64, heads=attention_heads))  # Use more heads for GAT
+            self.gat_in_channels = 64 * attention_heads
         
         # Global attention pool
-        self.attention_pool = GlobalAttention(gate_nn=nn.Linear(128, 1))
+        self.attention_pool = GlobalAttention(gate_nn=nn.Linear(self.gat_in_channels, 1))
         
         # Structural feature processing
         self.linear_structural = nn.Linear(62, 32)
         
         # Final classifier layers
-        self.fc1 = nn.Linear(num_channels + 128 + 32, 256)
+        self.fc1 = nn.Linear(num_channels + self.gat_in_channels + 32, 256)
         self.fc2 = nn.Linear(256, num_classes)
 
     def forward(self, sequence, graph_data, structural_features, batch_index):
@@ -68,11 +74,12 @@ class ProteinClassifier(nn.Module):
         out = F.relu(self.bn1(self.conv1(x_seq)))
         out = self.dense_blocks(out)
         out_pooled = F.adaptive_avg_pool1d(out, 1).squeeze(2)  # Reducing the dimension from [64, 160, 800] to [64, 160]
-
+   
         # Process graph
-        x_graph, edge_index = graph_data.x, graph_data.edge_index
-        x_graph = F.relu(self.gat1(x_graph, edge_index))
-        x_graph = F.relu(self.gat2(x_graph, edge_index))
+        x_graph = graph_data.x 
+        edge_index = graph_data.edge_index
+        for gat_layer in self.gat_layers:
+            x_graph = F.relu(gat_layer(x_graph, edge_index))
         x_graph_pooled = self.attention_pool(x_graph, batch_index)
         
         # Process structural features
