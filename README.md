@@ -17,8 +17,8 @@ When you obtain all of these additional features, To gather all of these structu
 
 Please save the final data incuding all dynamics, sequence, and structural features in a processed folder. 
 
-To run the DSDCrystal model, you need to run main.py file
-main.py --data_dir "C:/Users/mom19004/Downloads/sams/" --data "M.pt"
+To run the DSDCrystal model, you need to run whole_train_part.py file
+whole_train_part.py --data_dir 
 
 Part of this source codes are obtained from the following papers. if you use this source please cite following papers:
 
