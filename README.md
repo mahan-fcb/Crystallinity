@@ -20,13 +20,17 @@ Please save the final data incuding all dynamics, sequence, and structural featu
 To run the DSDCrystal model, you need to run whole_train_part.py file
 whole_train_part.py --data_dir 
 
-Part of this source codes are obtained from the following papers. if you use this source please cite following papers:
+We have to mention that Part of this source codes,specially for dynamic feature extractions, are obtained from the following papers. if you use this source please cite following papers as well:
+
 
 1- Chiang, Yuan, Wei-Han Hui, and Shu-Wei Chang. "Encoding protein dynamic information in graph representation for functional residue identification." Cell Reports Physical Science 3.7 (2022).
 
 
 2- Omee, Sadman Sadeed, Steph-Yves Louis, Nihang Fu, Lai Wei, Sourin Dey, Rongzhi Dong, Qinyang Li, and Jianjun Hu. "Scalable deeper graph neural networks for high-performance materials property prediction." Patterns 3, no. 5 (2022).
- 
+
+
+ If you have any questions, please contact me via: 
+ mohammad.madani@uconn.edu
 
 
 
