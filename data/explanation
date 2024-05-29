@@ -1,3 +1,5 @@
+All raw file based on their classes are provided. 
+Please note that the TR, SP, and balanced are extracted from these 5 classes of data.
 This folder includs all datasets for different classes obtained from various sources cited in our manuscript. 
 MF: sequencing failed; cloning failed; expression failed
 
